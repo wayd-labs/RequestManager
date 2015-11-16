@@ -3,6 +3,7 @@ package com.e16din.requestmanager.retrofit;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.Map;
@@ -17,12 +18,16 @@ import retrofit.converter.GsonConverter;
 public class RetrofitAdapter extends BaseRetrofitAdapter {
 
     public static Object getService(Class requestManagerInterface, String endpoint, Map<String, String> headers) {
+        return getService(requestManagerInterface, endpoint, headers, new GsonBuilder().create());
+    }
+
+    public static Object getService(Class requestManagerInterface, String endpoint, Map<String, String> headers, Gson gson) {
         return new RestAdapter.Builder()
                 .setEndpoint(endpoint)
                 .setErrorHandler(new StaticErrorHandler())
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setRequestInterceptor(getRequestInterceptor(headers))
-                .setConverter(new GsonConverter(new GsonBuilder().create()))
+                .setConverter(new GsonConverter(gson))
                 .build()
                 .create(requestManagerInterface);
     }

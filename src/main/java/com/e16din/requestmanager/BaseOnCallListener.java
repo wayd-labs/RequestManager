@@ -1,9 +1,9 @@
 package com.e16din.requestmanager;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
+import com.e16din.lightutils.utils.U;
 import com.google.gson.JsonSyntaxException;
 
 import org.apache.http.conn.ConnectTimeoutException;
@@ -25,8 +25,8 @@ public abstract class BaseOnCallListener<T> implements IBaseOnCallListener<T> {
 
     @Override
     public void onExceptionError(Throwable exception, String responseString) {
-        String message = null;
-        Log.e("error", "onExceptionError: ", exception);
+        String message;
+        U.e(getClass(), "onExceptionError: " + exception.getMessage());
 
         if (exception instanceof JsonSyntaxException) {
             message = "Получены данные неверного формата";
@@ -34,16 +34,11 @@ public abstract class BaseOnCallListener<T> implements IBaseOnCallListener<T> {
             message = KEY_NO_INTERNET_CONNECTION;
         } else if (exception instanceof SocketTimeoutException || exception instanceof ConnectTimeoutException) {
             message = KEY_NO_INTERNET_CONNECTION;
-            // message = getString(R.string.timeout_exception);
         } else if (exception instanceof UnknownHostException) {
             message = KEY_NO_INTERNET_CONNECTION;
-            // message = null;// getString(R.string.unknown_host_exception); //because Internet checker already
-            // exist
         } else if (exception instanceof ConnectException) {
             message = KEY_NO_INTERNET_CONNECTION;
-            // message = null;// because Internet checker already exist
-        } else if (exception != null)
-            message = String.format("Неизвестное исключение: %1$s", exception.getMessage());
+        } else message = String.format("Неизвестное исключение: %1$s", exception.getMessage());
 
         showErrorAlert(message);
     }

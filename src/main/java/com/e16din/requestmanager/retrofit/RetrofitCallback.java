@@ -1,9 +1,9 @@
 package com.e16din.requestmanager.retrofit;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.WindowManager;
 
+import com.e16din.lightutils.utils.U;
 import com.e16din.requestmanager.BaseOnCallListener;
 import com.e16din.requestmanager.IBaseResult;
 
@@ -55,16 +55,15 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
     }
 
     private void logExceptionOnSuccess(Exception e) {
-        Log.e("debug", "error caused when activity or fragment " +
-                "becomes inactive before call the methods: ", e);
+        U.e(getClass(), "error caused when activity or fragment " +
+                "becomes inactive before call the methods: " + e.getMessage());
     }
 
     @Override
     public void failure(RetrofitError error) {
         beforeResult();
 
-        Log.e("RetrofitCallback", "error: " + error);
-        Log.e("RetrofitCallback", "error.getMessage(): " + error.getMessage());
+        U.e(getClass(), "error: " + error.getMessage());
 
         if (error.getMessage() != null && (error.getMessage().contains("java.io.EOFException")
                 || error.getMessage().contains("400 Bad Request"))) {
@@ -81,7 +80,7 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
     private String getCookieString(Response response) {
         for (Header header : response.getHeaders()) {
             if (header.getName() != null && header.getName().equals("Set-Cookie")) {
-                Log.d("retrofit_xx", "Set-Cookie: " + header.getValue());
+                U.d(getClass(), "Set-Cookie: " + header.getValue());
                 return header.getValue();
             }
         }
