@@ -26,7 +26,8 @@ public abstract class BaseOnCallListener<T> implements IBaseOnCallListener<T> {
     @Override
     public void onExceptionError(Throwable exception, String responseString) {
         String message;
-        U.e(getClass(), "onExceptionError: " + exception.getMessage());
+        if (exception != null)
+            U.e(getClass(), "onExceptionError: " + exception.getMessage());
 
         if (exception instanceof JsonSyntaxException) {
             message = "Получены данные неверного формата";
@@ -38,7 +39,8 @@ public abstract class BaseOnCallListener<T> implements IBaseOnCallListener<T> {
             message = KEY_NO_INTERNET_CONNECTION;
         } else if (exception instanceof ConnectException) {
             message = KEY_NO_INTERNET_CONNECTION;
-        } else message = String.format("Неизвестное исключение: %1$s", exception.getMessage());
+        } else
+            message = String.format("Неизвестное исключение: %1$s", exception != null ? exception.getMessage() : null);
 
         showErrorAlert(message);
     }
