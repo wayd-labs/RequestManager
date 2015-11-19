@@ -5,11 +5,13 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.okhttp.OkHttpClient;
 
 import java.util.Map;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 /**
@@ -28,7 +30,9 @@ public class RetrofitAdapter extends BaseRetrofitAdapter {
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setRequestInterceptor(getRequestInterceptor(headers))
                 .setConverter(new GsonConverter(gson))
+                .setClient(new OkClient(new OkHttpClient()))
                 .build()
+
                 .create(requestManagerInterface);
     }
 
