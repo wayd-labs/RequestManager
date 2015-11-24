@@ -41,7 +41,9 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
         }
 
         try {
-            if (result.isSuccess()) {
+            if(result == null) {
+                onResultNull();
+            }else if (result.isSuccess()) {
                 onSuccess(result);
             } else {
                 onErrorFromServer(result);//rename to onErrorCode
