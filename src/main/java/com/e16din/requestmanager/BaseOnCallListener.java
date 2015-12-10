@@ -21,10 +21,6 @@ public abstract class BaseOnCallListener<T> implements IBaseOnCallListener<T> {
     public abstract Context getContext();
 
     @Override
-    public void onResultNull() {
-    }
-
-    @Override
     public void onExceptionError(Throwable exception, String responseString) {
         String message;
         if (exception != null)

@@ -4,8 +4,6 @@ public interface IBaseOnCallListener<T> {
 
     void beforeResult();
 
-    void onResultNull();
-
     void onSuccess(T result);
 
     void onErrorFromServer(T result);

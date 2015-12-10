@@ -42,7 +42,9 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
 
         try {
             if (result == null) {
-                onResultNull();
+                onSuccess(null);
+            } else if ((result + "").startsWith("[") && (result + "").length() <= 3) {
+                onSuccess(null);
             } else if (result.isSuccess()) {
                 onSuccess(result);
             } else {
