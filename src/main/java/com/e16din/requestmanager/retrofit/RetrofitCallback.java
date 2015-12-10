@@ -7,8 +7,6 @@ import com.e16din.lightutils.utils.U;
 import com.e16din.requestmanager.BaseOnCallListener;
 import com.e16din.requestmanager.IBaseResult;
 
-import java.util.ArrayList;
-
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Header;
@@ -44,10 +42,6 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
 
         try {
             if (result == null) {
-                onResultNull();
-            } else if (result instanceof ArrayList && ((ArrayList) result).size() == 0) {
-                onResultNull();
-            } else if ((result + "").startsWith("[") && (result + "").length() <= 3) {
                 onResultNull();
             } else if (result.isSuccess()) {
                 onSuccess(result);
