@@ -22,26 +22,41 @@ import retrofit.converter.GsonConverter;
 public class RetrofitAdapter extends BaseRetrofitAdapter {
 
     public static Object getService(Class requestManagerInterface, String endpoint, Map<String, String> headers) {
-        return getService(requestManagerInterface, endpoint, headers, new GsonBuilder().create(), null);
+        return getService(requestManagerInterface, endpoint, headers, new GsonBuilder().create(), null, null);
     }
 
     public static Object getService(Class requestManagerInterface, String endpoint, Map<String, String> headers, Gson gson, Cache cache) {
+        return getService(requestManagerInterface, endpoint, headers, gson, cache, null);
+    }
+
+    public static Object getService(Class requestManagerInterface, String endpoint, Map<String, String> headers, RestAdapter.Log log) {
+        return getService(requestManagerInterface, endpoint, headers, new GsonBuilder().create(), null, log);
+    }
+
+    public static Object getService(Class requestManagerInterface, String endpoint, Map<String, String> headers, Gson gson, Cache cache, RestAdapter.Log log) {
         OkHttpClient client = new OkHttpClient();
         if (cache != null)
             client.setCache(cache);
         client.setConnectTimeout(30, TimeUnit.SECONDS);
         client.setReadTimeout(30, TimeUnit.SECONDS);
 
-        return new RestAdapter.Builder()
+        RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(endpoint)
                 .setErrorHandler(new StaticErrorHandler())
                 .setLogLevel(RestAdapter.LogLevel.FULL)
+
                 .setRequestInterceptor(getRequestInterceptor(headers))
                 .setConverter(new GsonConverter(gson))
-                .setClient(new OkClient(client))
-                .build()
+                .setClient(new OkClient(client));
 
-                .create(requestManagerInterface);
+        if (log != null)
+            builder.setLog(log);
+
+        return builder.build().create(requestManagerInterface);
+    }
+
+    public static Object getService(Class requestManagerInterface, RestAdapter.Builder builder) {
+        return builder.build().create(requestManagerInterface);
     }
 
     @NonNull
