@@ -23,6 +23,11 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
         if (!TextUtils.isEmpty(cookies))
             BaseRetrofitAdapter.setCookies(cookies);
 
+        if (needCancel()) {
+            onCancel();
+            return;
+        }
+
         beforeResult();
 
         if (StaticErrorHandler.getLastRetrofitError() != null) {
@@ -65,6 +70,11 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
 
     @Override
     public void failure(RetrofitError error) {
+        if (needCancel()) {
+            onCancel();
+            return;
+        }
+        
         beforeResult();
 
         U.e(getClass(), "error: " + error.getMessage());

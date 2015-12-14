@@ -13,4 +13,8 @@ public interface IBaseOnCallListener<T> {
     void onHttpError(int code);
 
     void afterResult();
+
+    boolean needCancel();
+
+    void onCancel();
 }
