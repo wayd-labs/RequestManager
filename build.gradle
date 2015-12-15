@@ -40,6 +40,6 @@ android {
 
 dependencies {
     compile 'com.github.e16din:LightUtils:1.1.4'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.squareup.okhttp:okhttp:2.6.0'
 }

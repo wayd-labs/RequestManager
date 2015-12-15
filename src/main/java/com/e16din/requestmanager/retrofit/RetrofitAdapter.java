@@ -44,7 +44,6 @@ public class RetrofitAdapter extends BaseRetrofitAdapter {
                 .setEndpoint(endpoint)
                 .setErrorHandler(new StaticErrorHandler())
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-
                 .setRequestInterceptor(getRequestInterceptor(headers))
                 .setConverter(new GsonConverter(gson))
                 .setClient(new OkClient(client));
