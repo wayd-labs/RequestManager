@@ -54,7 +54,7 @@ public class RetrofitAdapter extends BaseRetrofitAdapter {
         return builder.build().create(requestManagerInterface);
     }
 
-    public static Object getService(Class requestManagerInterface, RestAdapter.Builder builder, Map<String, String> headers, Cache cache) {
+    public static Object getServiceWithOkHttpClient(Class requestManagerInterface, RestAdapter.Builder builder, Map<String, String> headers, Cache cache) {
         OkHttpClient client = new OkHttpClient();
         if (cache != null)
             client.setCache(cache);
@@ -64,6 +64,13 @@ public class RetrofitAdapter extends BaseRetrofitAdapter {
         builder.setErrorHandler(new StaticErrorHandler())
                 .setRequestInterceptor(getRequestInterceptor(headers))
                 .setClient(new OkClient(client));
+
+        return builder.build().create(requestManagerInterface);
+    }
+
+    public static Object getService(Class requestManagerInterface, RestAdapter.Builder builder, Map<String, String> headers, Cache cache) {
+        builder.setErrorHandler(new StaticErrorHandler())
+                .setRequestInterceptor(getRequestInterceptor(headers));
 
         return builder.build().create(requestManagerInterface);
     }
