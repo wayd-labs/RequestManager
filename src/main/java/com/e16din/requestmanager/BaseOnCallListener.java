@@ -43,7 +43,7 @@ public abstract class BaseOnCallListener<T> implements IBaseOnCallListener<T> {
     }
 
     @Override
-    public void afterResult() {
+    public void afterResult(boolean withError) {
     }
 
     @Override

@@ -4,15 +4,15 @@ public interface IBaseOnCallListener<T> {
 
     void beforeResult();
 
-    void onSuccess(T result);
+    void onSuccess(T result, int statusCode);
 
-    void onErrorFromServer(T result);
+    void onErrorFromServer(IBaseResult result);
 
     void onExceptionError(Throwable e, String responseString);
 
-    void onHttpError(int code);
+    void onHttpError(int code, String message, String body);
 
-    void afterResult();
+    void afterResult(boolean withError);
 
     boolean needCancel();
 
