@@ -29,7 +29,7 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
             BaseRetrofitAdapter.setCookies(cookies);
 
         if (needCancel()) {
-            Log.w(LOG_TAG, "success: operation canceled!");
+            Log.w(LOG_TAG, "success: operation canceled! try override needCancel method");
             onCancel();
             return;
         }
