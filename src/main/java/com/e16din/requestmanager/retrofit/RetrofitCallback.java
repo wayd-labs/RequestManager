@@ -1,9 +1,9 @@
 package com.e16din.requestmanager.retrofit;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.WindowManager;
 
-import com.e16din.lightutils.utils.U;
 import com.e16din.requestmanager.BaseOnCallListener;
 import com.e16din.requestmanager.IBaseResult;
 
@@ -16,6 +16,8 @@ import retrofit.mime.TypedByteArray;
 public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCallListener<T>
         implements Callback<T> {
 
+    public static final String LOG_TAG = "RequestManager";
+
     public static final int HTTP_ERROR_BAD_REQUEST = 400;
 
     private boolean withError = false;
@@ -27,7 +29,7 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
             BaseRetrofitAdapter.setCookies(cookies);
 
         if (needCancel()) {
-            U.w(getClass(), "success: operation canceled!");
+            Log.w(LOG_TAG, "success: operation canceled!");
             onCancel();
             return;
         }
@@ -74,7 +76,7 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
     }
 
     private void logExceptionOnSuccess(Exception e) {
-        U.e(getClass(), "error caused when activity or fragment " +
+        Log.e(LOG_TAG, "error caused when activity or fragment " +
                 "becomes inactive before call the methods: " + e.getMessage() + " or trivial NPE");
     }
 
@@ -104,7 +106,7 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
             return;
         }
 
-        U.e(getClass(), "error: " + error.getMessage());
+        Log.e(LOG_TAG, "error: " + error.getMessage());
 
         if (error.getMessage() != null && (error.getMessage().contains("java.io.EOFException")
                 || error.getMessage().contains("400 Bad Request"))) {
@@ -121,7 +123,7 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
     private String getCookieString(Response response) {
         for (Header header : response.getHeaders()) {
             if (header.getName() != null && header.getName().equals("Set-Cookie")) {
-                U.d(getClass(), "Set-Cookie: " + header.getValue());
+                Log.d(LOG_TAG, "Set-Cookie: " + header.getValue());
                 return header.getValue();
             }
         }

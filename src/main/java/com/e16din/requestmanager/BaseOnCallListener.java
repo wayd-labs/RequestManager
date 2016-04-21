@@ -1,9 +1,9 @@
 package com.e16din.requestmanager;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.e16din.lightutils.utils.U;
 import com.google.gson.JsonSyntaxException;
 
 import org.apache.http.conn.ConnectTimeoutException;
@@ -16,6 +16,8 @@ import javax.net.ssl.SSLException;
 
 public abstract class BaseOnCallListener<T> implements IBaseOnCallListener<T> {
 
+    public static final String LOG_TAG = "RequestManager";
+
     public static final String KEY_NO_INTERNET_CONNECTION = "no_internet_connection";
 
     public abstract Context getContext();
@@ -24,7 +26,7 @@ public abstract class BaseOnCallListener<T> implements IBaseOnCallListener<T> {
     public void onExceptionError(Throwable exception, String responseString) {
         String message;
         if (exception != null)
-            U.e(getClass(), "onExceptionError: " + exception.getMessage());
+            Log.e(LOG_TAG, "onExceptionError: " + exception.getMessage());
 
         if (exception instanceof JsonSyntaxException) {
             message = "Получены данные неверного формата";
