@@ -1,12 +1,10 @@
 package com.e16din.requestmanager;
 
-public interface IBaseOnCallListener<T> {
-
-    void beforeResult();
+public interface Callback<T> {
 
     void onSuccess(T result, int statusCode);
 
-    void onErrorFromServer(IBaseResult result);
+    void onErrorFromServer(Result result);
 
     void onExceptionError(Throwable e, String responseString);
 

@@ -1,6 +1,6 @@
 package com.e16din.requestmanager;
 
 
-public interface IBaseResult {
+public interface Result {
     boolean isSuccess();
 }

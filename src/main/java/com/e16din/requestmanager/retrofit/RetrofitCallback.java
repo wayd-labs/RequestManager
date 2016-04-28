@@ -4,17 +4,15 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.WindowManager;
 
-import com.e16din.requestmanager.BaseOnCallListener;
-import com.e16din.requestmanager.IBaseResult;
+import com.e16din.requestmanager.Callback;
+import com.e16din.requestmanager.Result;
 
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Header;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCallListener<T>
-        implements Callback<T> {
+public abstract class RetrofitCallback<T extends Result> implements Callback<T>, retrofit.Callback<T> {
 
     public static final String LOG_TAG = "RequestManager";
 
@@ -35,7 +33,6 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
         }
 
         withError = false;
-        beforeResult();
 
         if (StaticErrorHandler.getLastRetrofitError() != null) {
             withError = true;
@@ -51,24 +48,23 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
                         StaticErrorHandler.getLastRetrofitError().getMessage());
             }
 
-            StaticErrorHandler.setLastRetrofitError(null);
-            afterResult(withError);
-            return;
-        }
-
-        try {
-            if (result == null) {
-                onSuccess(null, response.getStatus());
-            } else if ((result + "").startsWith("[") && (result + "").length() <= 3) {
-                onSuccess(null, response.getStatus());
-            } else if (result.isSuccess()) {
-                onSuccess(result, response.getStatus());
-            } else {
+        } else {
+            try {
+                if (result == null) {
+                    onSuccess(null, response.getStatus());
+                } else if ((result + "").startsWith("[") && (result + "").length() <= 3) {
+                    onSuccess(null, response.getStatus());
+                } else if (result.isSuccess()) {
+                    onSuccess(result, response.getStatus());
+                } else {
+                    withError = true;
+                    onErrorFromServer(result);//rename to onErrorCode
+                }
+            } catch (NullPointerException | WindowManager.BadTokenException | IllegalStateException e) {
                 withError = true;
-                onErrorFromServer(result);//rename to onErrorCode
+                logExceptionOnSuccess(e);
+                onExceptionError(e, null);
             }
-        } catch (NullPointerException | WindowManager.BadTokenException | IllegalStateException e) {
-            logExceptionOnSuccess(e);
         }
 
         afterResult(withError);
@@ -88,7 +84,6 @@ public abstract class RetrofitCallback<T extends IBaseResult> extends BaseOnCall
         }
 
         withError = true;
-        beforeResult();
 
         if (StaticErrorHandler.getLastRetrofitError() != null) {
             if (StaticErrorHandler.getLastRetrofitError().getResponse() != null
