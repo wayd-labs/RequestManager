@@ -1,6 +1,6 @@
 # RequestManager
 
-## ICallback
+## Callback
 ```java
 public interface Callback<T> {
 
