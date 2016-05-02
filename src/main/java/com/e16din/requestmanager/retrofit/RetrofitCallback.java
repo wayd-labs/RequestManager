@@ -124,4 +124,29 @@ public abstract class RetrofitCallback<T extends Result> implements Callback<T>,
         }
         return null;
     }
+
+    @Override
+    public void onErrorFromServer(Result result) {
+    }
+
+    @Override
+    public void onExceptionError(Throwable e, String responseString) {
+    }
+
+    @Override
+    public void onHttpError(int code, String message, String body) {
+    }
+
+    @Override
+    public void afterResult(boolean withError) {
+    }
+
+    @Override
+    public boolean needCancel() {
+        return false;
+    }
+
+    @Override
+    public void onCancel() {
+    }
 }
