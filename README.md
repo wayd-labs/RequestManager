@@ -34,6 +34,6 @@ buildscript {
 }
 
 dependencies {
-	compile 'com.github.e16din:RequestManager:1.2.4'
+	compile 'com.github.e16din:RequestManager:1.2.5'
 }
 ```
